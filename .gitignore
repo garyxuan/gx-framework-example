@@ -9,6 +9,7 @@ build/
 profiles/
 native
 .creator/
+profiles/
 #//////////////////////////
 # NPM
 #//////////////////////////
@@ -23,3 +24,7 @@ node_modules/
 # WebStorm
 #//////////////////////////
 .idea/
+
+# 系统文件
+.DS_Store
+Thumbs.db
