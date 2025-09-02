@@ -1,0 +1,10 @@
+{
+  "name": "gx-framework-example",
+  "uuid": "30aa1130-3484-4f38-b515-e51975d77e52",
+  "creator": {
+    "version": "3.8.7"
+  },
+  "dependencies": {
+    "protobufjs": "^7.5.4"
+  }
+}

@@ -1,0 +1,53 @@
+syntax = "proto3"; // 指定proto版本
+
+message BaseCmd {    
+  int32 cmd = 1;    // 消息号
+  bytes data = 2;     // 消息体
+  int32 reqId = 3;    // 请求号 做请求响应使用,服务器需要响应消息里放同样的reqId
+  int32 code = 4;     // 错误id 0 正常响应其他是错误
+  string msg = 5;     // 错误信息
+}
+
+//用户基础信息
+message UserInfo {
+  string uid = 1;    // 用户uid
+  string nickName = 2;    // 用户昵称
+  string avatar = 3;    // 头像 e
+  int32  gender = 4;    // 性别
+  int64 level = 5;    // 等级
+  int64 coin = 6;    // 金券
+}
+
+enum Cmd {
+  _default = 0;
+  Ping = 1;
+  
+  EventServerReady = 1000;
+  GetUserInfo = 1001;
+  EventNotice = 1002;
+}
+
+message PingReq {
+  
+}
+
+message PingResp {
+  int64 time = 1;
+}
+
+message GetUserInfoReq {
+  string uid = 1;
+}
+
+message GetUserInfoResp {
+  UserInfo userInfo = 1;
+}
+
+message EventNotice{
+  
+}
+
+message EventServerReady
+{
+  UserInfo userInfo = 1;
+}

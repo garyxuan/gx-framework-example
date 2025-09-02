@@ -1,0 +1,24 @@
+{
+  "name": "protobuf-websocket-server",
+  "version": "1.0.0",
+  "description": "简单的protobuf WebSocket服务器",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "ws": "^8.14.2",
+    "protobufjs": "^7.5.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "websocket",
+    "protobuf",
+    "nodejs"
+  ],
+  "author": "garyxuan",
+  "license": "MIT"
+}
