@@ -1,5 +1,3 @@
-import { warn } from "../tool/Log"
-
 /*
  * @Author: garyxuan
  * @Version: V1.0
@@ -14,6 +12,10 @@ export interface size {
 export interface FrameConfig {
     /** 开启debug 默认false */
     debug?: boolean;
+    /** 隐藏性能统计 */
+    hideStats?: boolean;
+    /** 显示GM*/
+    showGM?: boolean;
 }
 
 export let GX_DEBUG: boolean = false;
@@ -22,7 +24,7 @@ export let GX_DEBUG: boolean = false;
 export function enableDebugMode(enable: boolean): void {
     if (enable) {
         GX_DEBUG = true;
-        warn("enableDebugMode:true");
+        console.warn("enableDebugMode:true");
     }
     else {
         GX_DEBUG = false;

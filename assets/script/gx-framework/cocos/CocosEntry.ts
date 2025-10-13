@@ -1,4 +1,4 @@
-import { Component, director, game, macro, sys } from "cc";
+import { Component, director, game, macro, profiler, sys } from "cc";
 import { enableDebugMode, FrameConfig } from "../global/header";
 
 /*
@@ -14,13 +14,13 @@ import { debug, log } from "../tool/Log";
 import { Timer } from "../tool/Timer";
 import { Time } from "../tool/Time";
 import { GlobalTimer } from "../global/GlobalTimer";
-import { GlobalEvent } from "../global/GlobalEvent";
+import { ModuleBase } from "../module/ModuleBase";
 const { property } = _decorator;
 export abstract class CocosEntry extends Component {
     @property({ displayName: "帧率" })
     fps: number = 60;
 
-    private _innerTimer: Timer = null;
+    // private _innerTimer: Timer = null;
 
     /**
      * 入口初始化,子类必须实现
@@ -36,6 +36,9 @@ export abstract class CocosEntry extends Component {
 
         const config: FrameConfig = this.getConfig();
         enableDebugMode(config.debug ?? false);
+        if (config.hideStats) {
+            profiler.hideStats();
+        }
 
         // 设置游戏帧率
         game.frameRate = this.fps;
@@ -44,6 +47,7 @@ export abstract class CocosEntry extends Component {
         this.initPlatform();
         this.initTime();
         this.initAdapter();
+        this.initModule();
         log("CocosEntry init finish");
         this.onInit();
     }
@@ -62,6 +66,10 @@ export abstract class CocosEntry extends Component {
                 Platform.isIOS = true;
                 debug("system is IOS")
                 break;
+            case sys.OS.OSX:
+                Platform.isMacOS = true;
+                debug("system is MacOS")
+                break;
             case sys.OS.OPENHARMONY:
                 Platform.isHarmonyOS = true;
                 debug("system is HarmonyOS")
@@ -70,21 +78,17 @@ export abstract class CocosEntry extends Component {
                 break;
         }
         switch (sys.platform) {
-            case sys.Platform.WECHAT_GAME:
-                Platform.isWX = true;
-                Platform.platform = PlatformType.WX;
+            case sys.Platform.IOS:
+                Platform.platform = PlatformType.IOS;
                 break;
-            case sys.Platform.ALIPAY_MINI_GAME:
-                Platform.isAlipay = true;
-                Platform.platform = PlatformType.Alipay;
+            case sys.Platform.MACOS:
+                Platform.platform = PlatformType.MacOS;
                 break;
-            case sys.Platform.BYTEDANCE_MINI_GAME:
-                Platform.isBytedance = true;
-                Platform.platform = PlatformType.Bytedance;
-                break
-            case sys.Platform.HUAWEI_QUICK_GAME:
-                Platform.isHuaweiQuick = true;
-                Platform.platform = PlatformType.HuaweiQuick;
+            case sys.Platform.ANDROID:
+                Platform.platform = PlatformType.Android;
+                break;
+            case sys.Platform.OPENHARMONY:
+                Platform.platform = PlatformType.HarmonyOS;
                 break;
             default:
                 // 其他都设置为浏览器
@@ -99,15 +103,23 @@ export abstract class CocosEntry extends Component {
         new CocosAdapter().init();
     }
 
+    private initModule(): void {
+        debug("init module");
+        for (const module of this.getComponentsInChildren(ModuleBase)) {
+            debug(`init module: ${module.moduleName}`);
+            module.init();
+        }
+    }
+
     private initTime(): void {
         Time.init();
-        this._innerTimer = new Timer(16);
+        // this._innerTimer = new Timer(16);
         GlobalTimer.initTimer();
         this.schedule(this.tick.bind(this), 0, macro.REPEAT_FOREVER);
     }
 
     private tick(dt: number): void {
-        this._innerTimer.update(dt);
+        // this._innerTimer.update(dt);
         GlobalTimer.update(dt);
     }
 }

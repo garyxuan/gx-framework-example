@@ -38,12 +38,12 @@ export class GlobalTimer {
     /**
      * 启动一个定时器，返回定时器ID。
      * 用于在其他模块中启动定时器，使用定时器ID可以暂停、恢复、停止定时器。
-     * @param callback 定时器回调函数
+     * @param callback 定时器回调函数 dt:时间间隔（秒）
      * @param interval 定时器间隔时间，以秒为单位
      * @param loop [loop=0] 重复次数：0：回调一次，1~n：回调n次，-1：无限重复
      * @returns 定时器ID
      */
-    public static startTimer(callback: () => void, interval: number, loop: number = 0): number {
+    public static startTimer(callback: (dt: number) => void, interval: number, loop: number = 0): number {
         return this._timer.start(callback, interval, loop);
     }
 
